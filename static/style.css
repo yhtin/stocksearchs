@@ -1,12 +1,13 @@
 body {
         font-family: Arial, sans-serif;
-        background-color: #3A1078;
+        background-color: #460C68;
+        margin: 100px
       }
 
       #container {
         width: 600px;
         margin:  auto;
-        background-color: #FF5F9E;
+        background-color: #7F167F;
         border-radius: 10px;
         box-shadow: 0px 2px 2px gray;
         padding: 20px;
@@ -16,6 +17,7 @@ body {
       #search-box {
         padding: 10px;
         font-size: 16px;
+        font-color: #03001C
         border-radius: 5px;
         border: 1px solid gray;
         width: 300px;
@@ -24,6 +26,7 @@ body {
 
       #stock-details {
         margin-top: 20px;
+        font-color: #03001C
         padding: 10px;
         background-color: #f2f2f2;
         border: 1px solid gray;
