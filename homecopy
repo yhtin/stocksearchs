@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Stock Details</title>
+    <style>
+      #search-box {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid gray;
+        width: 300px;
+        margin-right: 10px;
+      }
+
+      #search-button {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid gray;
+        background-color: #4CAF50;
+        color: white;
+      }
+
+      #stock-details {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: white;
+        border: 1px solid gray;
+        border-radius: 5px;
+        box-shadow: 0px 2px 2px gray;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div>
+      <input type="text" id="search-box" list="stock-list" placeholder="Search...">
+      <datalist id="stock-list">
+        {% for option in options %}
+          <option value="{{ option }}">{{ options[option] }}</option>
+        {% endfor %}
+      </datalist>
+      <button id="search-button">Search</button>
+    </div>
+
+    <div id="stock-details" style="display:none">
+      <h2 id="stock-name"></h2>
+      <p>Current Price: <span id="current-price"></span></p>
+      <p>Last 52 Week High: <span id="week-high"></span></p>
+      <p>Last 52 Week Low: <span id="week-low"></span></p>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $('#search-button').click(function() {
+          var stock_name = $('#search-box').val();
+          $.post('/', { stock_name: stock_name }, function(data) {
+            $('#stock-name').text(stock_name);
+            $('#current-price').text(data.current_price);
+            $('#week-high').text(data.week_high);
+            $('#week-low').text(data.week_low);
+            $('#stock-details').show();
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>NSE API Demo</title>
+</head>
+<body>
+    <h1>NSE API Demo</h1>
+    <form method="POST">
+        <label for="stock_name">Select a stock:</label>
+        <input type="text" id="search" onkeyup="filterOptions()" placeholder="Search...">
+        <select name="stock_name" id="stock_name">
+            {% for option in options %}
+            <option value="{{ option }}">{{ option }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Get current price</button>
+    </form>
+    {% if current_price is defined %}
+    <h2>Current price for {{ selected }}: {{ current_price }}</h2>
+    <h2>52 weeks low for {{ selected }}: {{ low52 }} </h2>
+    <h2>52 weeks high for {{ selected }}: {{ high52 }} </h2>
+    {% endif %}
+    <script>
+        function filterOptions() {
+            var input, filter, options, i;
+            input = document.getElementById("search");
+            filter = input.value.toUpperCase();
+            options = document.getElementById("stock_name").options;
+            for (i = 0; i < options.length; i++) {
+                if (options[i].text.toUpperCase().indexOf(filter) > -1) {
+                    options[i].style.display = "";
+                } else {
+                    options[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Stock Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/style.css') }}">
+  </head>
+
+  <body>
+    <div id="container">
+      <h1>Search the Stock</h1>
+      <form method="POST">
+        <input type="text" id="search-box" name="stock_name" list="stock-list" placeholder="Search the NSE stock...">
+        <datalist id="stock-list">
+          {% for option in options %}
+            <option value="{{ option }}">{{ options[option] }}</option>
+          {% endfor %}
+        </datalist>
+      </form>
+
+      {% if selected %}
+  <div id="stock-details">
+    <h2 id="stock-name">{{ selected }}</h2>
+    {% if error %}
+      <p id="error-msg">{{ error }}</p>
+    {% else %}
+      <p>Current Price: <span id="current-price">{{ current_price }}</span></p>
+      <p>Last 52 Week High: <span id="week-high">{{ high52 }}</span></p>
+      <p>Last 52 Week Low: <span id="week-low">{{ low52 }}</span></p>
+    {% endif %}
+  </div>
+{% endif %}
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $('#search-box').change(function() {
+          // get selected stock name
+          var selectedStock = $('#search-box').val();
+
+          // submit the form to get stock details
+          $('form').submit();
+        });
+      });
+    </script>
+  </body>
+</html>

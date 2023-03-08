@@ -1,0 +1,19 @@
+from flask import Flask, render_template, request
+from nsetools import Nse
+
+app = Flask(__name__)
+
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    nse = Nse()
+    options = nse.get_stock_codes()
+    if request.method == 'POST':
+        stock_name = request.form['stock_name']
+        current_price = nse.get_quote(stock_name)['lastPrice']
+        week_high = nse.get_quote(stock_name)['dayHigh52']
+        week_low = nse.get_quote(stock_name)['dayLow52']
+        return render_template('home.html', options=options, current_price=current_price, selected=stock_name, week_high=week_high, week_low=week_low)
+    return render_template('home.html', options=options)
+
+if __name__ == '__main__':
+    app.run(debug=True)
